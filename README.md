@@ -1,57 +1,31 @@
 # ros-turtlebot3-pid-kalman-control
 
-ROS (Noetic) project for controlling a TurtleBot3 in Gazebo using **PID control** with **noisy sensor readings** and **Kalman filtering** to improve state estimation.
+ROS (Noetic) project for TurtleBot3 control in Gazebo, covering PID control and state estimation with noisy sensor data (Kalman filtering), submitted for 3806ICT Robotics.
 
-## What’s included
-- PID controller for motion control
-- Simulated noisy sensors
-- Kalman filter to smooth/estimate measurements
-- Gazebo simulation (TurtleBot3)
-
-## Repository structure
-Typical layout:
-- `src/` — ROS package source code (nodes, launch files, config)
-- `report/` (or similar) — assignment/report PDF and supporting material
-- `README.md` — this file
-
-If your repo differs, check the top-level folders on GitHub and start in `src/`.
+## Repository contents
+- `assignment1_setup/` – ROS workspace/package files for the assignment.
+- `assignment1_setup.tar` – Packaged version of the setup directory.
+- `3806ICT_Jack_Millington_s5405915_assignment1.pdf` – Full report.
+- `instructions.txt` – Setup/run notes.
+- `README.md` – Project overview.
 
 ## Report
-The write-up/report is included in the repository. You can view it directly on GitHub:
-https://github.com/jackmillington/ros-turtlebot3-pid-kalman-control
-
-Tip: click the PDF file in the repo to preview it in the browser, or download it from there.
+Open `3806ICT_Jack_Millington_s5405915_assignment1.pdf` in the repo to view the full write-up.
 
 ## Requirements
-- Ubuntu + ROS Noetic
-- Gazebo
-- TurtleBot3 packages (and model setup)
+- Ubuntu with ROS Noetic
+- Gazebo and TurtleBot3 packages
 
-## Build
+## Build (catkin)
+Place `assignment1_setup/` inside your catkin workspace and build:
+
 ```bash
 cd ~/catkin_ws
 catkin_make
 source devel/setup.bash
-````
-
-## Run
-
-(Replace package/node names below with the ones in this repo.)
-
-```bash
-roslaunch <package_name> <launch_file>.launch
-# or
-rosrun <package_name> <node_name>
+Run
+Follow instructions.txt for the exact launch/run commands used for the submission.
 ```
 
-## Notes
-
-* This repo is intended to be used inside a `catkin_ws/src` workspace.
-* Do not commit ROS build artifacts (`build/`, `devel/`, `logs/`).
-
-## Author
-
+Author
 Jack Millington
-
-```
-```
