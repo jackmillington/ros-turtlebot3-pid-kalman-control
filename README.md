@@ -24,8 +24,9 @@ cd ~/catkin_ws
 catkin_make
 source devel/setup.bash
 Run
-Follow instructions.txt for the exact launch/run commands used for the submission.
 ```
+Follow instructions.txt for the exact launch/run commands used for the submission.
+
 
 Author
 Jack Millington
