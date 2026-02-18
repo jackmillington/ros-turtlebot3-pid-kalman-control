@@ -1,0 +1,9 @@
+---
+Header header                        # Standard metadata for higher-level stamped data types.
+                                     # * header.seq holds the number of requests since the plugin started
+                                     # * header.stamp timestamp related to the pose
+                                     # * header.frame_id not used but currently filled with the relative_entity_name
+geometry_msgs/Point location         # The position of the robot
+geometry_msgs/Vector3[] covariance   # The covariance matrix [[XX, XY, XZ], [YX, YY, YZ], [ZX, ZY, ZZ]]
+bool success                         # return true if successful
+string status_message                # comments if available

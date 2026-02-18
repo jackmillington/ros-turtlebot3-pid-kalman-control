@@ -1,0 +1,10 @@
+Instructions to run code:
+
+1. Paste tar archive into a catkin workspace.\
+2. Build using catkin_make\
+3. Run source devel/setup.bash\
+4. Open a new terminal and run roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch\
+5. Place a unit_box in the environment, you can scale the box down if you like\
+5. Open a new terminal and run rosrun assignment1_setup noisy_sonars (sometimes will not run first try, just restart gazebo and then try again and it should work)\
+6. Open a new terminal and run rosrun assignment1_setup model_state\
+7. Open a new terminal and run rosrun assignment1_setup controller, the robot will now move towards the box :)

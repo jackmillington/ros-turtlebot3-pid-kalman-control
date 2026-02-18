@@ -1,0 +1,13 @@
+<!-- launch/controller.launch -->
+<launch>
+  <!-- load initial PID params onto the ROS parameter server -->
+  <param name="kp" value="0.002"/>
+  <param name="ki" value="0.00002"/>
+  <param name="kd" value="0.0002"/>
+
+  <!-- start your controller node, under the namespace /controller -->
+  <node name="controller" pkg="assignment1_setup" type="controller" output="screen">
+    <!-- these args become /controller/kp , etc. -->
+  </node>
+</launch>
+  <!-- roslaunch assignment1_setup controller.launch -->
