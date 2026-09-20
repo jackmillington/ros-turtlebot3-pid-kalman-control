@@ -7,7 +7,7 @@
 
 #include "ros/ros.h"
 #include "gazebo_msgs/GetModelState.h"
-#include "assignment1_setup/Sonars.h"
+#include "turtlebot3_pid_kalman_control/Sonars.h"
 #include "geometry_msgs/Pose.h"
 #include <math.h>
 #include <stdint.h>
@@ -16,7 +16,7 @@
 
 #ifdef NOISY_SONAR
 #include "noise.h"
-#include "assignment1_setup/ModelState.h"
+#include "turtlebot3_pid_kalman_control/ModelState.h"
 #endif
 
 bool isSeen(double angle) { // Returns true if seen by sonars
@@ -44,8 +44,8 @@ bool isFifth(double angle) {
     return (angle <= -160 && angle >= - 180) || (angle >= 160 && angle <= 180);
 }
 
-assignment1_setup::Sonars setMsg(uint16_t distance0, uint16_t distance1, uint16_t distance2, uint16_t distance3, uint16_t distance4, uint16_t distance5) {
-    assignment1_setup::Sonars msg;
+turtlebot3_pid_kalman_control::Sonars setMsg(uint16_t distance0, uint16_t distance1, uint16_t distance2, uint16_t distance3, uint16_t distance4, uint16_t distance5) {
+    turtlebot3_pid_kalman_control::Sonars msg;
     msg.distance0 = distance0;
     msg.distance1 = distance1;
     msg.distance2 = distance2;
@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
     ROS_INFO("Sonars node started. Target='%s', Robot='%s'", targetName.c_str(), robotName.c_str());
 
     // Publisher for the /sonars topic
-    ros::Publisher pub = nh.advertise<assignment1_setup::Sonars>("sonars", 1000);
+    ros::Publisher pub = nh.advertise<turtlebot3_pid_kalman_control::Sonars>("sonars", 1000);
 
     // Service client for /gazebo/get_model_state
     ros::ServiceClient locations =
@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
         double angle = atan2(y, x) * (180.0 / M_PI);
 
         // Create and publish the Sonars message
-        assignment1_setup::Sonars msg;
+        turtlebot3_pid_kalman_control::Sonars msg;
         if (!isSeen(angle)) {
             // No detection in ±45° FOV
             msg = setMsg(UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX);
@@ -162,4 +162,4 @@ int main(int argc, char **argv) {
 }
 
 // run world: roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
-// Run Cmd: rosrun assignment1_setup sonars _target:=unit_box _robot:=turtlebot3_burger
+// Run Cmd: rosrun turtlebot3_pid_kalman_control sonars _target:=unit_box _robot:=turtlebot3_burger

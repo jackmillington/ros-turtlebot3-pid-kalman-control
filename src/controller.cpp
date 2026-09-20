@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
-#include <assignment1_setup/Sonars.h>
-#include <assignment1_setup/ModelState.h>
+#include <turtlebot3_pid_kalman_control/Sonars.h>
+#include <turtlebot3_pid_kalman_control/ModelState.h>
 #include <gazebo_msgs/GetModelState.h> 
 #include <algorithm>
 #include <limits>
@@ -15,6 +15,9 @@ static double prevError = 0.0;
 static double integral = 0.0;
 static int lastIndex = -1;
 static ros::Time prevTime;
+static double kp = 0.002;
+static double ki = 0.00002;
+static double kd = 0.0002;
 
 // Kalman filter init
 static bool kalmanInit = false;
@@ -22,7 +25,7 @@ static double R_k = 396.956;  // calculated sensor variance in cm²
 static double P_k; // estimate variance (cm²)
 static double y_k; // filtered distance (cm)
 
-void sonarCallback(const assignment1_setup::Sonars::ConstPtr& msg) {
+void sonarCallback(const turtlebot3_pid_kalman_control::Sonars::ConstPtr& msg) {
     
     uint16_t distances[6] {
         msg->distance0,
@@ -59,9 +62,7 @@ void sonarCallback(const assignment1_setup::Sonars::ConstPtr& msg) {
     if (currentIndex != 1) {
         geometry_msgs::Twist turn;
         turn.linear.x = 0;
-        if (currentIndex == 1) {
-            turn.angular.z = 0;
-        } else if (currentIndex == 0) {
+        if (currentIndex == 0) {
             turn.angular.z = 0.4;
             turn.linear.x = 0.4;
         } else if (currentIndex == 2) {
@@ -117,7 +118,7 @@ void sonarCallback(const assignment1_setup::Sonars::ConstPtr& msg) {
     }
 
     // Task 3: fetch & convert covariance from turtlebot_position (m² → cm²)
-    assignment1_setup::ModelState cov_srv;
+    turtlebot3_pid_kalman_control::ModelState cov_srv;
     posClient.call(cov_srv);
 
     double cov_xx = cov_srv.response.covariance[0].x;
@@ -160,10 +161,6 @@ void sonarCallback(const assignment1_setup::Sonars::ConstPtr& msg) {
     double derivative = (error - prevError) / dt;
     integral += error * dt;
 
-    double kp = 0.0025; // Tweak as needed
-    double kd = 0.00008;
-    double ki = 0.000000000;
-
     double output = kp * error + kd * derivative + ki * integral;
 
     // Clamp speed to max speed and non negative
@@ -183,14 +180,19 @@ void sonarCallback(const assignment1_setup::Sonars::ConstPtr& msg) {
 int main(int argc, char **argv) {
     ros::init(argc, argv, "controller");
     ros::NodeHandle nh;
+    ros::NodeHandle pnh("~");
+
+    pnh.param("kp", kp, kp);
+    pnh.param("ki", ki, ki);
+    pnh.param("kd", kd, kd);
 
     cmdPub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
     gazeboClient = nh.serviceClient<gazebo_msgs::GetModelState>("/gazebo/get_model_state");
     ROS_INFO("Waiting for /gazebo/get_model_state...");
     ros::service::waitForService("/gazebo/get_model_state", ros::Duration(5.0));
-    posClient = nh.serviceClient<assignment1_setup::ModelState>("turtlebot_position");
+    posClient = nh.serviceClient<turtlebot3_pid_kalman_control::ModelState>("turtlebot_position");
 
-    ros::Subscriber sonarSub = nh.subscribe<assignment1_setup::Sonars>(
+    ros::Subscriber sonarSub = nh.subscribe<turtlebot3_pid_kalman_control::Sonars>(
         "/sonars",
         10,
         sonarCallback
@@ -199,5 +201,4 @@ int main(int argc, char **argv) {
     ros::spin();
 }
 
-// Run node: rosrun assignment1_setup controller
-// rosrun assignment1_setup model_state
+// Run with: roslaunch turtlebot3_pid_kalman_control controller.launch

@@ -1,0 +1,7 @@
+<launch>
+  <node name="controller" pkg="turtlebot3_pid_kalman_control" type="controller" output="screen">
+    <param name="kp" value="0.002"/>
+    <param name="ki" value="0.00002"/>
+    <param name="kd" value="0.0002"/>
+  </node>
+</launch>

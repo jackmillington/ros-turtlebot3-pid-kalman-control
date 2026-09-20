@@ -7,13 +7,13 @@
 
 #include "ros/ros.h"
 #include "gazebo_msgs/GetModelState.h"
-#include "assignment1_setup/ModelState.h"
+#include "turtlebot3_pid_kalman_control/ModelState.h"
 #include "noise.h"
 #include "geometry_msgs/Vector3.h"
 
 ros::ServiceClient getModelStateClient;
 
-bool getModelState(assignment1_setup::ModelState::Request &req, assignment1_setup::ModelState::Response &res) {
+bool getModelState(turtlebot3_pid_kalman_control::ModelState::Request &req, turtlebot3_pid_kalman_control::ModelState::Response &res) {
     gazebo_msgs::GetModelState gazeboSrv;
     gazeboSrv.request.model_name = "turtlebot3_burger";
     if (!getModelStateClient.call(gazeboSrv)) {

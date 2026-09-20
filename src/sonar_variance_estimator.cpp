@@ -1,7 +1,7 @@
 // src/sonar_variance_estimator.cpp
 
 #include <ros/ros.h>
-#include <assignment1_setup/Sonars.h>
+#include <turtlebot3_pid_kalman_control/Sonars.h>
 #include <cmath>
 
 static const int N = 1000;   // number of samples to collect
@@ -18,7 +18,7 @@ void addSample(double x) {
   M2 += delta * delta2;
 }
 
-void sonarCb(const assignment1_setup::Sonars::ConstPtr& msg) {
+void sonarCb(const turtlebot3_pid_kalman_control::Sonars::ConstPtr& msg) {
     
   double z = static_cast<double>(msg->distance1);
   addSample(z);
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "sonar_variance_estimator");
   ros::NodeHandle nh;
 
-  ros::Subscriber sub = nh.subscribe<assignment1_setup::Sonars>(
+  ros::Subscriber sub = nh.subscribe<turtlebot3_pid_kalman_control::Sonars>(
     "/sonars", 10, sonarCb);
 
   ROS_INFO("Estimating variance over %d samples—please hold robot steady.", N);
