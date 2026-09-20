@@ -23,7 +23,7 @@ flowchart LR
     S --> K[Kalman estimator]
     M --> K
     K --> P[PID controller]
-    P --> C[/cmd_vel]
+    P --> C["/cmd_vel"]
     C --> G
 ```
 
